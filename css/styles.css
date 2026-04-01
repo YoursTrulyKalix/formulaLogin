@@ -1,0 +1,568 @@
+/* ============================================================
+   style.css  —  Formula 1 Racing Theme
+   ============================================================ */
+
+@import url('https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;800;900&family=Barlow:wght@300;400;500;600&family=Share+Tech+Mono&display=swap');
+
+/* ── CSS Variables ─────────────────────────────────────── */
+:root {
+    --f1-red:       #E8002D;
+    --f1-red-dark:  #B0001F;
+    --f1-red-glow:  rgba(232, 0, 45, 0.35);
+    --f1-black:     #0A0A0A;
+    --f1-carbon:    #111111;
+    --f1-panel:     #181818;
+    --f1-border:    #2A2A2A;
+    --f1-white:     #F5F5F5;
+    --f1-silver:    #C0C0C0;
+    --f1-grey:      #888888;
+    --f1-accent:    #FFD700;
+
+    --font-display: 'Barlow Condensed', sans-serif;
+    --font-body:    'Barlow', sans-serif;
+    --font-mono:    'Share Tech Mono', monospace;
+}
+
+/* ── Reset & Base ──────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+    font-family: var(--font-body);
+    background-color: var(--f1-black);
+    color: var(--f1-white);
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow-x: hidden;
+    position: relative;
+}
+
+/* ── Racing Grid Background ────────────────────────────── */
+body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image:
+        linear-gradient(rgba(232,0,45,0.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(232,0,45,0.04) 1px, transparent 1px);
+    background-size: 60px 60px;
+    z-index: 0;
+    pointer-events: none;
+}
+
+/* ── Speed Lines (top accent bar) ─────────────────────── */
+body::after {
+    content: '';
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    height: 4px;
+    background: linear-gradient(90deg,
+        var(--f1-black) 0%,
+        var(--f1-red) 30%,
+        var(--f1-red) 70%,
+        var(--f1-black) 100%
+    );
+    z-index: 100;
+    box-shadow: 0 0 20px var(--f1-red-glow);
+}
+
+/* ── Main Container ────────────────────────────────────── */
+.container {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    width: 900px;
+    max-width: 98vw;
+    min-height: 520px;
+    background: var(--f1-carbon);
+    border: 1px solid var(--f1-border);
+    border-top: 3px solid var(--f1-red);
+    box-shadow:
+        0 0 60px rgba(0,0,0,0.8),
+        0 0 0 1px rgba(255,255,255,0.03) inset;
+    overflow: hidden;
+    animation: slideUp 0.5s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+@keyframes slideUp {
+    from { opacity: 0; transform: translateY(30px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ── Side Image Panel ──────────────────────────────────── */
+.side-image {
+    width: 340px;
+    flex-shrink: 0;
+    position: relative;
+    overflow: hidden;
+    background: var(--f1-black);
+}
+
+.side-image::after {
+    content: 'FORMULA\A LOGIN';
+    white-space: pre;
+    position: absolute;
+    bottom: 30px;
+    left: 24px;
+    font-family: var(--font-display);
+    font-size: 42px;
+    font-weight: 900;
+    line-height: 1;
+    color: var(--f1-white);
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    text-shadow: 0 2px 20px rgba(0,0,0,0.8);
+}
+
+.side-image::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+        135deg,
+        rgba(10,10,10,0.2) 0%,
+        rgba(10,10,10,0.5) 60%,
+        rgba(10,10,10,0.9) 100%
+    );
+    z-index: 1;
+}
+
+.side-image img {
+    width: 100%;
+    height: 50%;
+    object-fit: cover;
+    display: block;
+    filter: saturate(0.6) contrast(1.1);
+    position: absolute;
+    top: 20%; left: 0;
+}
+
+/* Red stripe on image side */
+.side-image .stripe {
+    position: absolute;
+    top: 0; bottom: 0;
+    right: 0;
+    width: 4px;
+    background: var(--f1-red);
+    z-index: 2;
+    box-shadow: -4px 0 20px var(--f1-red-glow);
+}
+
+/* ── Form Content ──────────────────────────────────────── */
+.form-content {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 50px 44px;
+    position: relative;
+}
+
+/* Corner number decoration */
+.form-content::before {
+    content: '01';
+    position: absolute;
+    top: 20px; right: 24px;
+    font-family: var(--font-display);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 3px;
+    color: var(--f1-red);
+    text-transform: uppercase;
+}
+
+/* ── Form Box ──────────────────────────────────────────── */
+.form-box {
+    display: none;
+    width: 100%;
+    animation: formFade 0.3s ease;
+}
+
+.form-box.active { display: block; }
+
+@keyframes formFade {
+    from { opacity: 0; transform: translateX(10px); }
+    to   { opacity: 1; transform: translateX(0); }
+}
+
+/* ── Headings ──────────────────────────────────────────── */
+h2 {
+    font-family: var(--font-display);
+    font-size: 36px;
+    font-weight: 900;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--f1-white);
+    margin-bottom: 28px;
+    position: relative;
+    padding-bottom: 14px;
+}
+
+h2::after {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 0;
+    width: 48px;
+    height: 3px;
+    background: var(--f1-red);
+    box-shadow: 0 0 10px var(--f1-red-glow);
+}
+
+/* ── Input Fields ──────────────────────────────────────── */
+.input-container {
+    margin-bottom: 18px;
+}
+
+.input-container label {
+    display: block;
+    font-family: var(--font-display);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 2.5px;
+    text-transform: uppercase;
+    color: var(--f1-grey);
+    margin-bottom: 8px;
+}
+
+.input-container input {
+    width: 100%;
+    padding: 13px 16px;
+    background: var(--f1-black);
+    border: 1px solid var(--f1-border);
+    border-left: 3px solid transparent;
+    color: var(--f1-white);
+    font-family: var(--font-body);
+    font-size: 14px;
+    outline: none;
+    transition: all 0.2s ease;
+    appearance: none;
+}
+
+.input-container input::placeholder {
+    color: #444;
+    font-size: 13px;
+}
+
+.input-container input:focus {
+    border-color: var(--f1-border);
+    border-left-color: var(--f1-red);
+    background: #0f0f0f;
+    box-shadow: 0 0 0 1px rgba(232,0,45,0.15) inset;
+}
+
+.input-container input:focus::placeholder {
+    color: #333;
+}
+
+/* ── Submit Button ─────────────────────────────────────── */
+button[type="submit"],
+button[type="button"],
+button {
+    width: 100%;
+    padding: 14px 24px;
+    margin-top: 8px;
+    background: var(--f1-red);
+    border: none;
+    color: var(--f1-white);
+    font-family: var(--font-display);
+    font-size: 14px;
+    font-weight: 700;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+    transition: all 0.2s ease;
+    clip-path: polygon(8px 0%, 100% 0%, calc(100% - 8px) 100%, 0% 100%);
+}
+
+button::before {
+    content: '';
+    position: absolute;
+    top: 0; left: -100%;
+    width: 100%; height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
+    transition: left 0.4s ease;
+}
+
+button:hover { background: var(--f1-red-dark); }
+button:hover::before { left: 100%; }
+button:active { transform: scale(0.99); }
+
+/* ── Secondary Button ──────────────────────────────────── */
+.btn-secondary {
+    background: transparent !important;
+    border: 1px solid var(--f1-border) !important;
+    color: var(--f1-silver) !important;
+    clip-path: polygon(8px 0%, 100% 0%, calc(100% - 8px) 100%, 0% 100%);
+}
+.btn-secondary:hover {
+    background: rgba(255,255,255,0.05) !important;
+    border-color: var(--f1-grey) !important;
+}
+
+/* ── Footer Links ──────────────────────────────────────── */
+.footer-links {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 16px;
+}
+
+.footer-links a {
+    font-family: var(--font-display);
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--f1-grey);
+    text-decoration: none;
+    transition: color 0.2s;
+}
+
+.footer-links a:hover { color: var(--f1-red); }
+
+/* ── Messages ──────────────────────────────────────────── */
+.error-message {
+    background: rgba(232, 0, 45, 0.12);
+    border-left: 3px solid var(--f1-red);
+    color: #ff6b7a;
+    font-family: var(--font-body);
+    font-size: 13px;
+    padding: 10px 14px;
+    margin-bottom: 18px;
+    letter-spacing: 0.3px;
+}
+
+.success-message {
+    background: rgba(0, 200, 100, 0.1);
+    border-left: 3px solid #00c864;
+    color: #00c864;
+    font-family: var(--font-body);
+    font-size: 13px;
+    padding: 10px 14px;
+    margin-bottom: 18px;
+    letter-spacing: 0.3px;
+}
+
+/* ── JWT / Token Info Cards ────────────────────────────── */
+.jwt-card {
+    background: var(--f1-black);
+    border: 1px solid var(--f1-border);
+    border-top: 2px solid var(--f1-red);
+    padding: 16px 18px;
+    margin: 22px 0;
+    text-align: left;
+}
+
+.jwt-card h4 {
+    font-family: var(--font-display);
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--f1-red);
+    margin-bottom: 12px;
+}
+
+.jwt-card .row,
+.role-info .row,
+.token-meta .row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 7px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.04);
+}
+
+.jwt-card .row:last-child,
+.role-info .row:last-child,
+.token-meta .row:last-child { border-bottom: none; }
+
+.jwt-card .label,
+.role-info .label,
+.token-meta .label {
+    font-family: var(--font-display);
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--f1-grey);
+}
+
+.jwt-card .value,
+.role-info .value,
+.token-meta .value {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    color: var(--f1-silver);
+}
+
+/* ── Role Info Card ────────────────────────────────────── */
+.role-info {
+    background: var(--f1-black);
+    border: 1px solid var(--f1-border);
+    border-top: 2px solid var(--f1-red);
+    padding: 16px 18px;
+    margin-bottom: 22px;
+    text-align: left;
+}
+
+/* ── Token Meta Card ───────────────────────────────────── */
+.token-meta {
+    background: var(--f1-black);
+    border: 1px solid var(--f1-border);
+    border-top: 2px solid #FFD700;
+    padding: 14px 16px;
+    margin-bottom: 20px;
+    font-size: 12px;
+    text-align: left;
+    color: var(--f1-silver);
+}
+
+/* ── Admin Panel ───────────────────────────────────────── */
+.admin-panel {
+    background: var(--f1-black);
+    border: 1px solid var(--f1-border);
+    padding: 16px 18px;
+    margin: 16px 0;
+    text-align: left;
+}
+
+.admin-panel h4 {
+    font-family: var(--font-display);
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--f1-grey);
+    margin-bottom: 12px;
+}
+
+.admin-actions { display: flex; flex-direction: column; gap: 6px; }
+
+.admin-action-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 9px 12px;
+    background: rgba(255,255,255,0.02);
+    border: 1px solid var(--f1-border);
+    font-family: var(--font-body);
+    font-size: 13px;
+    color: var(--f1-silver);
+    letter-spacing: 0.3px;
+}
+
+.dot {
+    width: 6px;
+    height: 6px;
+    background: var(--f1-red);
+    flex-shrink: 0;
+    box-shadow: 0 0 6px var(--f1-red-glow);
+}
+
+/* ── Badges ────────────────────────────────────────────── */
+.badge-admin {
+    display: inline-block;
+    padding: 2px 10px;
+    font-family: var(--font-display);
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    background: var(--f1-red);
+    color: white;
+    clip-path: polygon(5px 0%, 100% 0%, calc(100% - 5px) 100%, 0% 100%);
+}
+
+.badge {
+    display: inline-block;
+    padding: 2px 10px;
+    font-family: var(--font-display);
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    background: rgba(0,200,100,0.15);
+    color: #00c864;
+    border: 1px solid rgba(0,200,100,0.3);
+    clip-path: polygon(5px 0%, 100% 0%, calc(100% - 5px) 100%, 0% 100%);
+}
+
+/* ── Btn Group ─────────────────────────────────────────── */
+.btn-group {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-top: 8px;
+}
+
+.btn-group a { flex: 1; }
+.btn-group a button { margin-top: 0; }
+
+/* ── 403 Page ──────────────────────────────────────────── */
+.error-code {
+    font-family: var(--font-display);
+    font-size: 96px;
+    font-weight: 900;
+    color: var(--f1-red);
+    line-height: 1;
+    margin: 0 0 4px;
+    letter-spacing: -2px;
+    text-shadow: 0 0 40px var(--f1-red-glow);
+}
+
+.error-title {
+    font-family: var(--font-display);
+    font-size: 20px;
+    font-weight: 700;
+    letter-spacing: 5px;
+    text-transform: uppercase;
+    color: var(--f1-silver);
+    margin: 0 0 20px;
+}
+
+.error-detail {
+    font-family: var(--font-body);
+    font-size: 13px;
+    color: var(--f1-grey);
+    margin-bottom: 22px;
+    line-height: 1.7;
+}
+
+/* ── Strength Bar ──────────────────────────────────────── */
+.strength-bar {
+    height: 3px;
+    background: var(--f1-border);
+    margin-top: 8px;
+    overflow: hidden;
+}
+
+.strength-fill {
+    height: 100%;
+    width: 0%;
+    transition: width 0.3s ease, background 0.3s ease;
+}
+
+/* ── Narrow Container (forgot/reset password) ──────────── */
+.container.narrow {
+    width: 460px;
+    min-height: auto;
+}
+
+/* ── Standalone pages (forgot/reset/403) ───────────────── */
+.standalone .form-content {
+    padding: 50px 44px;
+    min-height: 400px;
+}
+
+.standalone .form-content::before { content: none; }
+
+/* ── Responsive ────────────────────────────────────────── */
+@media (max-width: 760px) {
+    .side-image { display: none; }
+    .container { width: 100%; min-height: 100vh; border-radius: 0; border-top-width: 4px; }
+    .form-content { padding: 40px 28px; }
+}
