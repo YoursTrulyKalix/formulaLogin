@@ -3,8 +3,8 @@
 --  Run this in phpMyAdmin (SQL tab)
 -- ============================================================
 
-CREATE DATABASE IF NOT EXISTS users_db;
-USE users_db;
+CREATE DATABASE IF NOT EXISTS users_dbs;
+USE users_dbs;
 
 -- Users table with email column added
 CREATE TABLE IF NOT EXISTS users (
